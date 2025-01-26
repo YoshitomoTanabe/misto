@@ -1,0 +1,20 @@
+{
+    "name": "React Dev Container",
+  
+    "image": "mcr.microsoft.com/devcontainers/typescript-node",
+    "customizations": {
+      "vscode": {
+        "settings": {},
+        "extensions": [
+            "streetsidesoftware.code-spell-checker",
+            "dsznajder.es7-react-js-snippets",
+            "esbenp.prettier-vscode"
+        ]
+      }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+      ],
+    "postCreateCommand": "sudo chown node node_modules"
+  }
+  
