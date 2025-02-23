@@ -8,7 +8,7 @@ export default function StoriesPage() {
     const router = useRouter();
 
     const handleClickTimeline = (storyName: string) => {
-        router.push(`/story/${storyName}`);
+        router.push(`/story/${storyName}?id=${storyId}`);
     };
     
     return (

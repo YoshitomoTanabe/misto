@@ -15,7 +15,6 @@ export default function LoginPage() {
       <button onClick={handleLogin} style={{ padding: "10px 20px", fontSize: "16px", cursor: "pointer" }}>
         ログイン
       </button>
-      <p>a</p>
     </div>
   );
 }

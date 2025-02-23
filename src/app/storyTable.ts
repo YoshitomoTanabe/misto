@@ -1,4 +1,3 @@
-
 const stories = [
     {
         storyId: "c397cea8-6d06-f5d8-79e4-26691fc3d2c7",
@@ -29,7 +28,7 @@ const stories = [
                         eventName: "イベント名3",
                         eventDate: "2024-05-15T10:00:00Z",
                         eventDescription: "これはサンプルのイベントです。",
-                    }
+                    },
                 ],
             },
             {
@@ -53,7 +52,7 @@ const stories = [
                         eventName: "イベント名6",
                         eventDate: "2024-05-15T10:00:00Z",
                         eventDescription: "これはサンプルのイベントです。",
-                    }
+                    },
                 ],
             },
         ],
@@ -81,7 +80,7 @@ const stories = [
                         eventName: "イベント名8",
                         eventDate: "2024-06-15T10:00:00Z",
                         eventDescription: "これは別のサンプルのイベントです。",
-                    }
+                    },
                 ],
             },
             {
@@ -99,17 +98,17 @@ const stories = [
                         eventName: "イベント名10",
                         eventDate: "2024-06-15T10:00:00Z",
                         eventDescription: "これは別のサンプルのイベントです。",
-                    }
+                    },
                 ],
             },
-        ]
-    }
+        ],
+    },
 ];
 
 export const listStories = () => {
     return stories.map((story) => {
         return {
-            storyName: story.storyId,
+            storyId: story.storyId,
             storyName: story.storyName,
             createUserId: story.createUserId,
             storyDescription: story.storyDescription,
@@ -117,13 +116,46 @@ export const listStories = () => {
             updateDate: new Date(story.updateDate),
         };
     });
-}
+};
 
-export type story = {
+export const getStory = (storyId: string): Story | undefined => {
+    const story = stories.find((story) => story.storyId === storyId);
+    if (story) {
+        return {
+            ...story,
+            createDate: new Date(story.createDate),
+            updateDate: new Date(story.updateDate),
+            timelines: story.timelines.map((timeline) => ({
+                ...timeline,
+                events: timeline.events.map((event) => ({
+                    ...event,
+                    eventDate: new Date(event.eventDate),
+                })),
+            })),
+        };
+    }
+    return undefined;
+};
+
+export type Event = {
+    eventId: string;
+    eventName: string;
+    eventDate: Date;
+    eventDescription: string;
+};
+
+export type Timeline = {
+    timelineName: string;
+    timelineId: string;
+    events: Event[];
+};
+
+export type Story = {
     storyId: string;
     storyName: string;
     createUserId: string;
     storyDescription: string;
     createDate: Date;
     updateDate: Date;
+    timelines: Timeline[];
 };
