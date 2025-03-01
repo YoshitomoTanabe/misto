@@ -7,8 +7,8 @@ import { listStories } from '../storyTable';
 export default function StoriesPage() {
     const router = useRouter();
 
-    const handleClickTimeline = (storyName: string) => {
-        router.push(`/story/${storyName}`);
+    const handleClickTimeline = (storyName: string, storyId: string) => {
+        router.push(`/story/${storyName}?id=${storyId}`);
     };
     
     return (
@@ -19,7 +19,7 @@ export default function StoriesPage() {
                     <li key={story.storyName}>
                         <button 
                             className='px-4 py-10 text-xl font-bold bg-blue-500 text-white rounded-lg hover:bg-blue-700' 
-                            onClick={() => handleClickTimeline(story.storyName)}
+                            onClick={() => handleClickTimeline(story.storyName, story.storyId)}
                         >
                             {story.storyName}
                         </button>
