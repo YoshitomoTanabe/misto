@@ -2,17 +2,17 @@ import { createEvent } from "@/api/createEvent";
 import type { Event } from "@/api/Types";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import type { Story } from "@/api/Types";
 
-export default function AddEvent({ storyId, timelineId }: { storyId: string; timelineId: string }) {
+export default function AddEvent({ storyId, timelineId, story, setStory }: { storyId: string, timelineId: string, story: Story, setStory: (story: Story) => void}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [eventName, setEventName] = useState("");
     const [eventDate, setEventDate] = useState("");
     const [eventDetails, setEventDetails] = useState("");
 
-    
-
     const handleAddEvent = () => {
         addEvent(eventName, new Date(eventDate), eventDetails);
+        //storyのイベントのうち、eventDateを整列し、setStoryで更新する.
         setIsModalOpen(false);
         setEventName("");
         setEventDetails("");
@@ -25,13 +25,28 @@ export default function AddEvent({ storyId, timelineId }: { storyId: string; tim
     }, []);
 
     const addEvent = (eventName: string, eventDate: Date, eventDetails: string) => {
-        const eventObject: Event = {
+        
+        const newEvent: Event = {
             eventId: uuidv4(),
             eventName: eventName,
             eventDate: eventDate,
             eventDescription: eventDetails,
         }
-        createEvent(storyId, timelineId, eventObject);
+
+        setStory({
+            ...story,
+            timelines: story.timelines.map((timeline) => {
+            if (timeline.timelineId === timelineId) {
+                return {
+                ...timeline,
+                events: [...timeline.events, newEvent].sort((a, b) => b.eventDate.getTime() - a.eventDate.getTime()),
+                };
+            }
+            return timeline;
+            }),
+        });
+
+        createEvent(storyId, timelineId, newEvent);
         
     }
     return (
