@@ -1,4 +1,5 @@
-import { createEvent, Event } from "@/api/createEvent";
+import { createEvent } from "@/api/createEvent";
+import type { Event } from "@/api/Types";
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,6 +8,8 @@ export default function AddEvent({ storyId, timelineId }: { storyId: string; tim
     const [eventName, setEventName] = useState("");
     const [eventDate, setEventDate] = useState("");
     const [eventDetails, setEventDetails] = useState("");
+
+    
 
     const handleAddEvent = () => {
         addEvent(eventName, new Date(eventDate), eventDetails);

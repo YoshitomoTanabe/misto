@@ -1,3 +1,5 @@
+import type { Story, Event } from "./Types"
+
 const stories = [
     {
         storyId: "c397cea8-6d06-f5d8-79e4-26691fc3d2c7",
@@ -192,26 +194,3 @@ export const createEvent = (storyId: string, timelineId: string, event: Event) =
     timeline.events.push(event);
     return event;
 }
-
-export type Story = {
-    storyId: string,
-    storyName: string,
-    createUserId: string,
-    storyDescription: string,
-    createDate: Date,
-    updateDate: Date,
-    timelines: Timeline[],
-};
-
-export type Timeline = {
-    timelineId: string;
-    timelineName: string;
-    events: Event[];
-};
-
-export type Event = {
-    eventId: string;
-    eventName: string;
-    eventDate: Date;
-    eventDescription: string | undefined;
-};

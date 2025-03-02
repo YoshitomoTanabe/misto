@@ -3,10 +3,8 @@ import {
     VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-
-import { getStory } from "@/api/createEvent";
-export default function Timeline({ storyId }: { storyId: string }) {
-    const story = getStory(storyId);
+import type { Story } from "@/api/Types";
+export default function Timeline({ story }: { story: Story, }) {
     const events = story?.timelines[0].events;
 
     return events === undefined ? (

@@ -1,69 +1,25 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { getStory } from "@/app/storyTable";
+import AddEvent from "./addEvent";
+import Timeline from "./timeline";
+import { useState } from "react";
+import type { Story } from "@/api/Types";
+import { getStory } from "../../storyTable";
 
-export default function ShowStory() {
+export default function Story() {
     const searchParams = useSearchParams();
     const storyId = searchParams.get("id") || "no ID.";
-    const story = getStory(storyId);
-    return story === undefined ? 
-        <h1>ストーリーが見つかりませんでした。</h1>
-     : (
+    const [story, setStory] = useState<Story | undefined>(getStory(storyId));
+    setStory(story);
+    
+    if (story === undefined) {
+        return <h1>ストーリーが見つかりませんでした。</h1>;
+    }
+    return(
         <>
-            <h1>ストーリー詳細</h1>
-            <h2>ストーリーID: {storyId}</h2>
-            <p>
-                ストーリー名:{" "}
-                {story?.storyName
-                    ? story?.storyName
-                    : "ストーリー名がありません。"}
-            </p>
-            <p>
-                作成者ID:{" "}
-                {story?.createUserId
-                    ? story?.createUserId
-                    : "作成者IDがありません。"}
-            </p>
-            <p>
-                作成日:{" "}
-                {story?.createDate
-                    ? story?.createDate.toLocaleDateString("ja-JP")
-                    : "作成日がありません。"}
-            </p>
-            <p>
-                更新日:{" "}
-                {story?.updateDate
-                    ? story?.updateDate.toLocaleDateString("ja-JP")
-                    : "更新日がありません。"}
-            </p>
-            <p>
-                ストーリー概要:{" "}
-                {story?.storyDescription
-                    ? story?.storyDescription
-                    : "ストーリー概要がありません。"}
-            </p>
-            <h2>タイムライン</h2>
-            {story?.timelines.map((timeline) => (
-                <li key={timeline.timelineId}>
-                    <h3>タイムライン名: {timeline.timelineName}</h3>
-                    <ul>
-                        {timeline.events.map((event) => (
-                            <li key={event.eventId}>
-                                <h4>イベント名: {event.eventName}</h4>
-                                <p>
-                                    イベント日:{" "}
-                                    {event.eventDate.toLocaleDateString(
-                                        "ja-JP"
-                                    )}
-                                </p>
-                                <p>イベント概要: {event.eventDescription}</p>
-                            </li>
-                        ))}
-                    </ul>
-                </li>
-            ))}
-            ;
+            <Timeline story={story}/>
+            <AddEvent storyId={storyId} timelineId={story?.timelines[0].timelineId}/>
         </>
-    );
+    )
 }
